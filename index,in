@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- HEAD contains info ABOUT the page — not visible to user -->
+
+  <!-- Tells browser: this is HTML5 -->
+  <meta charset="UTF-8"/>
+
+  <!-- Makes it mobile friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Tab title -->
+  <title>My First Website</title>
+
+  <!-- ===================== CSS GOES HERE ===================== -->
+  <style>
+
+    /* This is a CSS comment */
+    /* Format: selector { property: value; } */
+
+    /* Reset default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Style the body (entire page) */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333333;
+    }
+
+    /* Style the header section */
+    header {
+      background-color: #0E5FD8;
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+    }
+
+    /* Style the main content area */
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* Style a card */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      color: #0E5FD8;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    /* Style a button */
+    .btn {
+      display: inline-block;
+      background: #0E5FD8;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 12px;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #0a4ab0;
+    }
+
+    /* Style the footer */
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #333;
+      color: white;
+      font-size: 0.85rem;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- BODY contains everything VISIBLE to the user -->
+
+  <!-- HEADER — top section -->
+  <header>
+    <h1>Hello World 👋</h1>
+    <p>This is my first website built with HTML, CSS and JavaScript</p>
+  </header>
+
+  <!-- MAIN — middle content -->
+  <main>
+
+    <div class="card">
+      <h2>About Me</h2>
+      <p>
+        I am learning web development. This page is built using
+        HTML for structure, CSS for design, and JavaScript for interactivity.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>What I am building</h2>
+      <p>
+        I am building a medical education platform called InfuMedz
+        that helps medical students learn through video lectures and digital books.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Click the button</h2>
+      <p id="message">Nothing happened yet.</p>
+      <button class="btn" onclick="handleClick()">Click Me</button>
+    </div>
+
+  </main>
+
+  <!-- FOOTER — bottom section -->
+  <footer>
+    <p>© 2026 My Website. Built with HTML, CSS, JS.</p>
+  </footer>
+
+  <!-- ===================== JS GOES HERE ===================== -->
+  <script>
+
+    // This is a JavaScript comment
+    // JavaScript runs in the browser and makes things interactive
+
+    // This function runs when the button is clicked
+    function handleClick() {
+
+      // Find the element with id="message"
+      const messageElement = document.getElementById('message');
+
+      // Change its text
+      messageElement.textContent = '🎉 You clicked the button! JavaScript is working!';
+
+      // Change its color
+      messageElement.style.color = '#0E5FD8';
+      messageElement.style.fontWeight = 'bold';
+    }
+
+  </script>
+
+</body>
+</html>
