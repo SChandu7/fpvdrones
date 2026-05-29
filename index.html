@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoltFPV — Drones Built Different</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FF5C1A;
+    --orange-dark: #C83D00;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --card: #181818;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0EDEA;
+    --muted: #888;
+    --font-head: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5%;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.9rem; font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--orange); color: #fff;
+    border: none; padding: 0.6rem 1.4rem;
+    border-radius: 4px; font-family: var(--font-body);
+    font-weight: 600; font-size: 0.85rem;
+    cursor: pointer; text-decoration: none;
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .nav-cta:hover { background: var(--orange-dark); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 5% 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,92,26,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,92,26,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,92,26,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,92,26,0.12);
+    border: 1px solid rgba(255,92,26,0.3);
+    color: var(--orange);
+    padding: 0.4rem 1rem; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+  h1.hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: 3px;
+    color: var(--text);
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1.hero-title .accent { color: var(--orange); }
+  .hero-sub {
+    max-width: 560px;
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin: 1.5rem auto 2.5rem;
+    font-weight: 400;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--orange); color: #fff;
+    padding: 0.85rem 2rem; border-radius: 4px;
+    font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    padding: 0.85rem 2rem; border-radius: 4px;
+    font-weight: 500; font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: var(--font-head); font-size: 2.8rem;
+    color: var(--orange); letter-spacing: 1px;
+  }
+  .hero-stat .lbl { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+
+  /* SECTION BASE */
+  section { padding: 6rem 5%; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 0.75rem;
+  }
+  h2.section-title {
+    font-family: var(--font-head);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 2px;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .section-desc {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--orange);
+    padding: 0.9rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-flex;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: var(--font-head);
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    color: #fff;
+    padding: 0 2rem;
+  }
+  .marquee-dot { color: rgba(255,255,255,0.4); }
+  @keyframes marquee { 0%{transform:translateX(0)}100%{transform:translateX(-50%)} }
+
+  /* SERVICES */
+  #services { background: var(--dark); }
+  .services-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; flex-wrap: wrap; gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .service-card {
+    background: var(--dark);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--orange);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .service-card:hover { background: #1a1a1a; }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    width: 48px; height: 48px;
+    background: rgba(255,92,26,0.1);
+    border: 1px solid rgba(255,92,26,0.2);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+  .service-card h3 {
+    font-family: var(--font-head);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .service-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+  /* DRONES / PRODUCTS */
+  #drones { background: var(--black); }
+  .drones-header { margin-bottom: 3rem; }
+  .drones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .drone-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .drone-card:hover { transform: translateY(-6px); border-color: rgba(255,92,26,0.3); }
+  .drone-img {
+    height: 200px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    position: relative; overflow: hidden;
+  }
+  .drone-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, var(--card) 0%, transparent 50%);
+  }
+  .drone-tag {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--orange); color: #fff;
+    font-size: 0.7rem; font-weight: 700;
+    padding: 0.25rem 0.6rem; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    z-index: 1;
+  }
+  .drone-body { padding: 1.5rem; }
+  .drone-body h3 {
+    font-family: var(--font-head);
+    font-size: 1.8rem; letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+  .drone-body p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.2rem; }
+  .drone-specs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.5rem; margin-bottom: 1.5rem;
+  }
+  .spec { font-size: 0.8rem; }
+  .spec .sk { color: var(--muted); }
+  .spec .sv { color: var(--text); font-weight: 500; }
+  .price {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .price-num {
+    font-family: var(--font-head);
+    font-size: 2rem; color: var(--orange); letter-spacing: 1px;
+  }
+  .price-num span { font-size: 1rem; color: var(--muted); font-family: var(--font-body); }
+  .btn-sm {
+    background: var(--orange); color: #fff;
+    padding: 0.55rem 1.2rem; border-radius: 4px;
+    font-size: 0.82rem; font-weight: 600;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-sm:hover { background: var(--orange-dark); }
+
+  /* WHY US */
+  #why { background: var(--dark); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    margin-top: 3rem;
+  }
+  .why-features { display: flex; flex-direction: column; gap: 1.5rem; }
+  .why-feature {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+  .why-feature:hover { border-color: rgba(255,92,26,0.3); }
+  .wf-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: rgba(255,92,26,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .wf-text h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .wf-text p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  .why-visual {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .why-big-icon { font-size: 8rem; margin-bottom: 1.5rem; display: block; }
+  .why-visual h3 {
+    font-family: var(--font-head);
+    font-size: 2rem; letter-spacing: 2px;
+    color: var(--orange); margin-bottom: 0.5rem;
+  }
+  .why-visual p { font-size: 0.9rem; color: var(--muted); }
+
+  /* GALLERY */
+  #gallery { background: var(--black); }
+  .gallery-header { margin-bottom: 2rem; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 220px 220px;
+    gap: 1rem;
+  }
+  .gallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: var(--card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    border: 1px solid var(--border);
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  .gallery-item:hover { transform: scale(0.99); }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-item.big { grid-column: span 2; }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(255,92,26,0.7);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+    font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #fff;
+  }
+
+  /* PROCESS */
+  #process { background: var(--dark); }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+    counter-reset: step;
+  }
+  .process-step {
+    padding: 2rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    position: relative;
+    counter-increment: step;
+  }
+  .process-step::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-head);
+    font-size: 3.5rem;
+    color: rgba(255,92,26,0.15);
+    position: absolute;
+    top: 0.5rem; right: 1rem;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .step-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .process-step h3 {
+    font-family: var(--font-head);
+    font-size: 1.3rem; letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+  .process-step p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* TESTIMONIALS */
+  #testimonials { background: var(--black); }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .testi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  .testi-stars { color: var(--orange); font-size: 1.1rem; margin-bottom: 1rem; }
+  .testi-text { font-size: 0.9rem; color: var(--text); line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+  .testi-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,92,26,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; color: var(--orange);
+  }
+  .testi-info .name { font-weight: 600; font-size: 0.9rem; }
+  .testi-info .role { font-size: 0.8rem; color: var(--muted); }
+
+  /* CTA */
+  #cta {
+    background: linear-gradient(135deg, #1a0d00 0%, #0a0a0a 50%, #1a0800 100%);
+    text-align: center;
+    padding: 7rem 5%;
+    position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content: '';
+    position: absolute;
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(255,92,26,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  #cta h2 {
+    font-family: var(--font-head);
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+  }
+  #cta p { font-size: 1rem; color: var(--muted); max-width: 480px; margin: 0 auto 2.5rem; }
+  .cta-form {
+    display: flex; gap: 0.75rem; max-width: 440px;
+    margin: 0 auto; flex-wrap: wrap; justify-content: center;
+  }
+  .cta-form input {
+    flex: 1; min-width: 200px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.85rem 1rem;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .cta-form input:focus { border-color: var(--orange); }
+  .cta-form input::placeholder { color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 4rem 5% 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand .logo-f {
+    font-family: var(--font-head);
+    font-size: 2rem; letter-spacing: 2px;
+    color: var(--text); text-decoration: none;
+    display: block; margin-bottom: 1rem;
+  }
+  .footer-brand .logo-f span { color: var(--orange); }
+  .footer-brand p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; max-width: 280px; }
+  .footer-social { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+  .social-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+    color: var(--muted);
+  }
+  .social-btn:hover { border-color: var(--orange); background: rgba(255,92,26,0.1); color: var(--orange); }
+  .footer-col h4 {
+    font-size: 0.8rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted); margin-bottom: 1.2rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col ul a { font-size: 0.9rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--text); }
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+    font-size: 0.82rem; color: var(--muted);
+    flex-wrap: wrap; gap: 0.5rem;
+  }
+  .footer-bottom a { color: var(--orange); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .why-grid { grid-template-columns: 1fr; }
+    .why-visual { display: none; }
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .gallery-item.big { grid-column: span 2; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 1rem 4%; }
+    section { padding: 4rem 4%; }
+    h1.hero-title { font-size: 3.8rem; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item.big { grid-column: span 1; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { gap: 2rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="logo" href="#"><span>VOLT</span>FPV</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#drones">Drones</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#gallery">Work</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a class="nav-cta" href="#cta">Get a Quote</a>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">🚀 Next-Gen FPV Technology</div>
+  <h1 class="hero-title">FLY<br><span class="accent">FURTHER.</span><br>SHOOT BETTER.</h1>
+  <p class="hero-sub">Custom-built FPV drones at unbeatable prices. Pro video production, cinematic shoots, and drone services — all under one roof.</p>
+  <div class="hero-btns">
+    <a href="#drones" class="btn-primary">Explore Drones</a>
+    <a href="#services" class="btn-outline">Our Services</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">50+</div><div class="lbl">Drones Built</div></div>
+    <div class="hero-stat"><div class="num">200+</div><div class="lbl">Shoots Done</div></div>
+    <div class="hero-stat"><div class="num">99%</div><div class="lbl">Client Satisfaction</div></div>
+    <div class="hero-stat"><div class="num">4K</div><div class="lbl">Video Quality</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-inner">
+    <span class="marquee-item">CUSTOM FPV BUILDS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">CINEMATIC SHOOTS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">GoPro AERIAL VIDEO <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">FPV RACING <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">DRONE REPAIR <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">FPV TRAINING <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">REAL ESTATE VIDEO <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">EVENT COVERAGE <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">CUSTOM FPV BUILDS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">CINEMATIC SHOOTS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">GoPro AERIAL VIDEO <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">FPV RACING <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">DRONE REPAIR <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">FPV TRAINING <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">REAL ESTATE VIDEO <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">EVENT COVERAGE <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">OUR<br>SERVICES</h2>
+    </div>
+    <p class="section-desc">From building custom FPV drones to delivering jaw-dropping aerial footage — we cover every angle.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🛠️</div>
+      <h3>Custom FPV Builds</h3>
+      <p>Hand-built FPV drones tailored to your requirements — racing, freestyle, or cinematic. Budget-friendly without cutting corners on performance.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎬</div>
+      <h3>Cinematic Video Shoots</h3>
+      <p>Stunning GoPro and high-res aerial footage for films, ads, YouTube, weddings, and real estate. Every frame crafted with precision.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📍</div>
+      <h3>Location Visualization</h3>
+      <p>Breathtaking aerial walkthroughs and 3D-style property/location visuals for architects, developers, and tourism brands.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏆</div>
+      <h3>FPV Racing & Events</h3>
+      <p>Organize and cover FPV drone racing events. High-speed, adrenaline-pumping footage that keeps audiences hooked.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎓</div>
+      <h3>FPV Training</h3>
+      <p>Learn to fly FPV drones — from simulator basics to outdoor freestyle. Beginner to advanced courses with hands-on practice.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Repair & Tuning</h3>
+      <p>Full drone repair, PID tuning, and part upgrades. We fix all brands and make your drone fly better than factory spec.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DRONES -->
+<section id="drones">
+  <div class="drones-header">
+    <div class="section-label">Our Products</div>
+    <h2 class="section-title">FPV DRONE<br>LINEUP</h2>
+    <p class="section-desc" style="margin-top:0.75rem">Professional performance at prices that make sense. Every drone hand-assembled and flight-tested.</p>
+  </div>
+  <div class="drones-grid">
+    <div class="drone-card">
+      <div class="drone-img">
+        <span class="drone-tag">BESTSELLER</span>
+        🚁
+      </div>
+      <div class="drone-body">
+        <h3>VOLT-3 Freestyle</h3>
+        <p>The perfect starter FPV that punches above its weight. Ideal for learning freestyle tricks and capturing smooth footage.</p>
+        <div class="drone-specs">
+          <div class="spec"><span class="sk">Frame:</span> <span class="sv">3" Prop</span></div>
+          <div class="spec"><span class="sk">Motor:</span> <span class="sv">1404 3800KV</span></div>
+          <div class="spec"><span class="sk">Flight Time:</span> <span class="sv">6–8 min</span></div>
+          <div class="spec"><span class="sk">Camera:</span> <span class="sv">Caddx Nano</span></div>
+          <div class="spec"><span class="sk">Range:</span> <span class="sv">1 km</span></div>
+          <div class="spec"><span class="sk">Weight:</span> <span class="sv">180g</span></div>
+        </div>
+        <div class="price">
+          <div class="price-num">₹8,999<span>/unit</span></div>
+          <a href="#cta" class="btn-sm">Order Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="drone-card">
+      <div class="drone-img">
+        <span class="drone-tag">POPULAR</span>
+        🛸
+      </div>
+      <div class="drone-body">
+        <h3>VOLT-5 Cinematic</h3>
+        <p>Our flagship 5-inch cinewhoop built for silky smooth shots. GoPro-ready with stabilization that rivals DJI.</p>
+        <div class="drone-specs">
+          <div class="spec"><span class="sk">Frame:</span> <span class="sv">5" Prop</span></div>
+          <div class="spec"><span class="sk">Motor:</span> <span class="sv">2306 2400KV</span></div>
+          <div class="spec"><span class="sk">Flight Time:</span> <span class="sv">8–10 min</span></div>
+          <div class="spec"><span class="sk">Camera:</span> <span class="sv">GoPro Mount</span></div>
+          <div class="spec"><span class="sk">Range:</span> <span class="sv">2 km</span></div>
+          <div class="spec"><span class="sk">Weight:</span> <span class="sv">320g</span></div>
+        </div>
+        <div class="price">
+          <div class="price-num">₹14,999<span>/unit</span></div>
+          <a href="#cta" class="btn-sm">Order Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="drone-card">
+      <div class="drone-img">
+        <span class="drone-tag">PRO BUILD</span>
+        ✈️
+      </div>
+      <div class="drone-body">
+        <h3>VOLT-7 Long Range</h3>
+        <p>Built for endurance and long-range exploration. DJI O3 digital feed, 7" props, and a 5000mAh battery that goes the distance.</p>
+        <div class="drone-specs">
+          <div class="spec"><span class="sk">Frame:</span> <span class="sv">7" Prop</span></div>
+          <div class="spec"><span class="sk">Motor:</span> <span class="sv">2807 1300KV</span></div>
+          <div class="spec"><span class="sk">Flight Time:</span> <span class="sv">20–25 min</span></div>
+          <div class="spec"><span class="sk">Camera:</span> <span class="sv">DJI O3</span></div>
+          <div class="spec"><span class="sk">Range:</span> <span class="sv">10+ km</span></div>
+          <div class="spec"><span class="sk">Weight:</span> <span class="sv">580g</span></div>
+        </div>
+        <div class="price">
+          <div class="price-num">₹24,999<span>/unit</span></div>
+          <a href="#cta" class="btn-sm">Order Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div>
+    <div class="section-label">Why VoltFPV</div>
+    <h2 class="section-title">BUILT BY<br>PILOTS.</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-features">
+      <div class="why-feature">
+        <div class="wf-icon">💰</div>
+        <div class="wf-text">
+          <h4>Lowest Prices in India</h4>
+          <p>We source components directly and assemble in-house, cutting out middlemen so you pay less for better quality.</p>
+        </div>
+      </div>
+      <div class="why-feature">
+        <div class="wf-icon">🎯</div>
+        <div class="wf-text">
+          <h4>Custom to Your Needs</h4>
+          <p>No cookie-cutter drones here. Every build is spec'd exactly to your use case — freestyle, cinematic, racing, or survey.</p>
+        </div>
+      </div>
+      <div class="why-feature">
+        <div class="wf-icon">✅</div>
+        <div class="wf-text">
+          <h4>Flight Tested & Tuned</h4>
+          <p>Every drone flies before it ships. We PID-tune each build until it's locked in. No surprises on your first flight.</p>
+        </div>
+      </div>
+      <div class="why-feature">
+        <div class="wf-icon">📞</div>
+        <div class="wf-text">
+          <h4>Lifetime Support</h4>
+          <p>Bought a drone from us? We're your tech support forever. Crashes, repairs, upgrades — we've got you covered.</p>
+        </div>
+      </div>
+      <div class="why-feature">
+        <div class="wf-icon">🎥</div>
+        <div class="wf-text">
+          <h4>Professional Video Output</h4>
+          <p>Our pilots are videographers first. We deliver color-graded, edited footage that's ready to post or broadcast.</p>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual">
+      <span class="why-big-icon">🏅</span>
+      <h3>TRUSTED BY CREATORS</h3>
+      <p>Filmmakers, real estate agencies, event planners, and racing clubs all choose VoltFPV for reliable results at honest prices.</p>
+      <div style="margin-top:2rem; display:flex; flex-direction:column; gap:1rem;">
+        <div style="background:rgba(255,92,26,0.1);border:1px solid rgba(255,92,26,0.2);border-radius:8px;padding:1rem;text-align:left">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--orange)">4.9 ★</div>
+          <div style="font-size:0.8rem;color:var(--muted)">Average client rating</div>
+        </div>
+        <div style="background:rgba(255,92,26,0.1);border:1px solid rgba(255,92,26,0.2);border-radius:8px;padding:1rem;text-align:left">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--orange)">48hr</div>
+          <div style="font-size:0.8rem;color:var(--muted)">Average build turnaround</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header">
+    <div class="section-label">Our Work</div>
+    <h2 class="section-title">SHOTS<br>WE'VE TAKEN</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item big" style="background:#1a1008;">
+      🌅
+      <div class="gallery-overlay">Sunset Aerial Cinematic</div>
+    </div>
+    <div class="gallery-item" style="background:#0d1a10;">
+      🌲
+      <div class="gallery-overlay">Forest Flythrough</div>
+    </div>
+    <div class="gallery-item" style="background:#0a0f1a;">
+      🏙️
+      <div class="gallery-overlay">City Night FPV</div>
+    </div>
+    <div class="gallery-item" style="background:#1a0a0a;">
+      🏎️
+      <div class="gallery-overlay">Racing Event Coverage</div>
+    </div>
+    <div class="gallery-item big" style="background:#0a1a14;">
+      🏔️
+      <div class="gallery-overlay">Mountain Long Range</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div>
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">FROM IDEA<br>TO FLIGHT</h2>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <span class="step-icon">💬</span>
+      <h3>CONSULT</h3>
+      <p>Tell us what you need — drone type, video shoot, event, or training. We listen and plan the perfect solution.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-icon">📐</span>
+      <h3>DESIGN</h3>
+      <p>We spec out your custom drone or shoot plan and share a transparent quote with no hidden charges.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-icon">🔩</span>
+      <h3>BUILD</h3>
+      <p>Our team assembles, solders, and programs each drone. Quality checked at every stage — typically 48 hours.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-icon">🧪</span>
+      <h3>TEST</h3>
+      <p>Every build gets flight tested and PID tuned. Only when it flies perfectly does it leave our workshop.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-icon">🚀</span>
+      <h3>DELIVER</h3>
+      <p>Receive your drone or finished footage. We offer handoff walkthroughs for drone buyers, free of charge.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div>
+    <div class="section-label">Client Reviews</div>
+    <h2 class="section-title">WHAT THEY<br>SAY</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Got a custom 5-inch cinewhoop built by VoltFPV. The quality is insane for the price. Flies smoother than any RTF drone I've tried. These guys really know their craft."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AK</div>
+        <div class="testi-info">
+          <div class="name">Arjun Kapoor</div>
+          <div class="role">Freelance Filmmaker, Mumbai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Hired VoltFPV for our property launch event. The aerial footage they shot was absolutely cinematic. Our social media engagement doubled after posting it. Highly recommend!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">PS</div>
+        <div class="testi-info">
+          <div class="name">Priya Sharma</div>
+          <div class="role">Real Estate Developer, Delhi</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Took the FPV training course and went from zero to flying freestyle in 3 weeks. The instructors are patient, knowledgeable, and genuinely passionate about the hobby."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RV</div>
+        <div class="testi-info">
+          <div class="name">Rohan Verma</div>
+          <div class="role">Student & FPV Enthusiast, Chandigarh</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="section-label" style="justify-content:center;display:flex">Ready to Fly?</div>
+  <h2>LET'S BUILD<br><span style="color:var(--orange)">SOMETHING</span></h2>
+  <p>Whether you need a custom drone, aerial footage, or want to learn FPV — drop us your details and we'll get back within 24 hours.</p>
+  <form class="cta-form" onsubmit="handleSubmit(event)">
+    <input type="text" id="name-input" placeholder="Your Name" required>
+    <input type="email" id="email-input" placeholder="Email Address" required>
+    <input type="text" id="service-input" placeholder="Service Needed (e.g. Drone Build)">
+    <button type="submit" class="btn-primary" style="width:100%;max-width:440px;margin-top:0.25rem">Send Message →</button>
+  </form>
+  <p id="form-msg" style="margin-top:1rem;color:var(--orange);display:none;font-weight:500">✅ Message sent! We'll reach out within 24 hours.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo-f" href="#"><span>VOLT</span>FPV</a>
+      <p>Building the future of FPV — one drone at a time. Custom builds, cinematic shoots, and training for enthusiasts and professionals across India.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn" title="Instagram">📸</a>
+        <a href="#" class="social-btn" title="YouTube">▶️</a>
+        <a href="#" class="social-btn" title="Twitter">🐦</a>
+        <a href="#" class="social-btn" title="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Custom Builds</a></li>
+        <li><a href="#services">Cinematic Shoots</a></li>
+        <li><a href="#services">Location Viz</a></li>
+        <li><a href="#services">FPV Racing</a></li>
+        <li><a href="#services">Training</a></li>
+        <li><a href="#services">Repair & Tuning</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#drones">VOLT-3 Freestyle</a></li>
+        <li><a href="#drones">VOLT-5 Cinematic</a></li>
+        <li><a href="#drones">VOLT-7 Long Range</a></li>
+        <li><a href="#cta">Custom Order</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:hello@voltfpv.in">hello@voltfpv.in</a></li>
+        <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+        <li><a href="#">WhatsApp Us</a></li>
+        <li><a href="#">Ludhiana, Punjab</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 VoltFPV. All rights reserved.</span>
+    <span>Made with ❤️ for the FPV community</span>
+    <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(10,10,10,0.97)';
+    } else {
+      nav.style.background = 'rgba(10,10,10,0.85)';
+    }
+  });
+
+  // Mobile menu toggle
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    const links = document.querySelector('.nav-links');
+    const cta = document.querySelector('nav .nav-cta');
+    if (menuOpen) {
+      links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:#111;padding:2rem;gap:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);z-index:99';
+      if (cta) cta.style.display = 'block';
+    } else {
+      links.style.display = 'none';
+      if (cta) cta.style.display = 'none';
+    }
+  }
+
+  // Smooth reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .drone-card, .why-feature, .process-step, .testi-card, .gallery-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+
+  // Number counter animation
+  function animateCounter(el, target, suffix = '') {
+    let current = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.round(current) + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 30);
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const nums = e.target.querySelectorAll('.num');
+        nums[0] && animateCounter(nums[0], 50, '+');
+        nums[1] && animateCounter(nums[1], 200, '+');
+        nums[2] && animateCounter(nums[2], 99, '%');
+        statsObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const statsEl = document.querySelector('.hero-stats');
+  if (statsEl) statsObserver.observe(statsEl);
+
+  // Form submission
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('form-msg').style.display = 'block';
+    e.target.reset();
+    setTimeout(() => {
+      document.getElementById('form-msg').style.display = 'none';
+    }, 5000);
+  }
+</script>
+</body>
+</html>
